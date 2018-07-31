@@ -1,0 +1,69 @@
+<div class="container">
+	<h4>BURGER CITY</h4>
+	<ul>
+
+	<li>- TODO: 1) add calendar icon for May 28th</li>
+	<li>lift Submit button up && center box class</li>
+	<li>find better font(s)</li>
+	<li>why does [A keep appearing in bash?</li>
+</ul><img id="burger-image" src="/assets/img/burger.png"> Add to calendar <a target="_blank" href="https://calendar.google.com/event?action=TEMPLATE&tmeid=NWxtM2ZtMzRrOW8yczZtYzVpY2s4aHMyYm0gb2ZuNDhlZTNlaTgwaHF2MzFlNzRnZ2ZhcmdAZw&tmsrc=ofn48ee3ei80hqv31e74ggfarg%40group.calendar.google.com"><img border="0" id="gcal" src="http://cdn.formidapps.com/icon/qwAzCxEt-64.cs.jpg"></a>
+	{{!--
+	<img src="https://comps.canstockphoto.com/vector-classic-burger-eps-vectors_csp38191032.jpg"> --}}
+	<div class="row">
+		<div class="box" id="UNEATEN">
+			<ul>
+				{{#each burgers.ready}}
+				<li>
+					#{{id}}. {{burger_name}}
+					<button data-burgerid="{{this.id}}" class="eat-me">CHOW</button>
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+		<div class="box" id="EATEN">
+			<ul>
+				{{#each burgers.eaten}}
+				<li>
+					#{{id}}. {{burger_name}}
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+	<div id="add-burger">
+		<form action="/" method="POST">
+			<textarea type="text" name="new-burger" id="user-burger"></textarea> {{!--
+			<input type="text" id="new-burger"> --}}
+			<button type="submit" id="add-btn">Submit</button>
+			<button type="submit" id="clear">Clear</button>
+		</form>
+	</div>
+</div> {{!-- end container --}}
+
+<script type="text/javascript">
+	var l = console.log;
+	$(".eat-me").on("click", function (event) {
+		//event.preventDefault();
+		var id = {burgerid: $(this).data("burgerid")};
+		$.post("/eat", id)
+			.then(function () {
+				location.reload();
+			});
+	}); //TODO: decide between this and no jQuery // this will reload the page after the burger is eaten.
+
+	$("#add-btn").on("click", function (event) {
+		event.preventDefault();
+		var burgerToAdd = { burger: $("#user-burger").val() };
+		$.post("/add", burgerToAdd)
+			.then(function () {
+				location.reload();
+			});
+	});
+		$("#clear").on("click", function (event) {
+		event.preventDefault();
+		$.post("/reset")
+			.then(function () {
+				location.reload();
+			});
+	});
+</script>
