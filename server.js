@@ -74,7 +74,6 @@ app.post("/eat", function (req, res) {
             return res.status(500).end()
         };
         // Send to the client the ID of the added burgere
-        // res.send("foo");
         res.send({ id: sqlData.insertId });
     });
 });
